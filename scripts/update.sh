@@ -4,6 +4,11 @@ OS='linux'
 BU='https://raw.githubusercontent.com/MYDan/perl/master'
 BP='/opt/mydan'
 
+if [ -f $BP/perl/.lock ]; then
+    echo "The perl is locked"
+    exit;
+fi
+
 if [ ! -d "$BP/perl" ]; then
     echo 'Not yet installed'
 fi
