@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OS='linux'
+OS=$(uname)
 BU='https://raw.githubusercontent.com/MYDan/perl/master'
 BP='/opt/mydan'
 
