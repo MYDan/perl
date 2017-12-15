@@ -8,7 +8,7 @@ if [ ! -d "$BP/perl" ]; then
     echo 'Not yet installed'
 fi
 
-version=$(curl $BU/data/$OS/version)
+version=$(curl -s $BU/data/$OS/version)
 
 if [[ $version =~ ^[0-9]{14}$ ]]; then
     echo "version: $version"
