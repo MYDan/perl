@@ -23,7 +23,7 @@ else
     exit;
 fi
 
-wget -O perl.$version.tar.gz $BU/data/linux/perl.$version.tar.gz
+wget -O perl.$version.tar.gz $BU/data/$OS/perl.$version.tar.gz
 
 if [ ! -e $BP ]; then
     mkdir -p $BP
