@@ -1,18 +1,22 @@
 #!/bin/bash
 
 OS=$(uname)
+ARCH=$(uname -m)
 PERLURL='https://raw.githubusercontent.com/MYDan/perl/master'
 INSTALLERDIR='/opt/mydan'
 
-
-for T in "Linux"
+for T in "Linux:x86_64"
 do
-    [ "X$SO" == "X$T" ] &&  break
+    o=$(echo $T|awk -F: '{print $1}')
+    a=$(echo $T|awk -F: '{print $2}')
+    [ "X$OS" == "X$o" ] && [ "X$ARCH" == "X$a" ]&&  break
 done
 
-if [ "X$OS" != "X$T" ]; then
-  echo "$OS : Not supported"
-  exit 1
+if [ "X$OS" == "X$o" ] && [ "X$ARCH" == "X$a" ]; then
+    echo "OS:$OS ARCH:$ARCH ok"
+else
+    echo "OS:$OS ARCH:$ARCH Not supported"
+    exit 1
 fi
 
 if [ -f $INSTALLERDIR/perl/.lock ]; then
@@ -35,7 +39,7 @@ if [ ! -d "$INSTALLERDIR/perl" ]; then
     echo 'Not yet installed'
 fi
 
-version=$(curl -s $PERLURL/data/$OS/version)
+version=$(curl -s $PERLURL/data/$OS/$ARCH/version)
 
 if [[ $version =~ ^[0-9]{14}$ ]]; then
     echo "version: $version"
@@ -59,7 +63,7 @@ clean_exit () {
 
 LOCALINSTALLER=$(mktemp perl.XXXXXX)
 
-wget -O $LOCALINSTALLER $PERLURL/data/$OS/perl.$version.tar.gz || clean_exit 1
+wget -O $LOCALINSTALLER $PERLURL/data/$OS/$ARCH/perl.$version.tar.gz || clean_exit 1
 
 if [ ! -e $INSTALLERDIR ]; then
     mkdir -p $INSTALLERDIR
