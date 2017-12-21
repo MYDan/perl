@@ -52,7 +52,7 @@ localversion=$(cat /$INSTALLERDIR/perl/.version )
 
 if [ "X$localversion" == "X$version" ]; then
     echo "This is the latest version of Perl";
-    exit 1;
+    exit 0;
 fi
 
 clean_exit () {
