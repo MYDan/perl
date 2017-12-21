@@ -40,7 +40,7 @@ fi
 
 version=$(curl -s $PERLURL/data/$OS/$ARCH/version)
 if [[ $version =~ ^[0-9]{14}$ ]];then
-    echo "version: $version"
+    echo "perl version: $version"
 else
     echo "get version fail"
     exit;

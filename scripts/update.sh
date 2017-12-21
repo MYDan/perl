@@ -42,7 +42,7 @@ fi
 version=$(curl -s $PERLURL/data/$OS/$ARCH/version)
 
 if [[ $version =~ ^[0-9]{14}$ ]]; then
-    echo "version: $version"
+    echo "perl version: $version"
 else
     echo "get version fail"
     exit;
@@ -51,7 +51,7 @@ fi
 localversion=$(cat /$INSTALLERDIR/perl/.version )
 
 if [ "X$localversion" == "X$version" ]; then
-    echo "perl's the latest version";
+    echo "This is the latest version of Perl";
     exit;
 fi
 
