@@ -73,4 +73,6 @@ tar -zxf $LOCALINSTALLER -C $INSTALLERDIR || clean_exit 1
 
 [ -f $LOCALINSTALLER ] && rm $LOCALINSTALLER
 
+echo $version > $INSTALLERDIR/perl/.version
+
 echo OK
