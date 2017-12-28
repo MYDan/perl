@@ -41,8 +41,8 @@ if [ ! -d "$INSTALLERDIR/perl" ]; then
 fi
 
 VVVV=$(curl -s $PERLURL/data/$OS/$ARCH/version)
-version=$(echo $VVV|awk '{print -F: $1}')
-md5=$(echo $VVV|awk '{print -F: $2}')
+version=$(echo $VVVV|awk -F: '{print $1}')
+md5=$(echo $VVVV|awk -F: '{print $2}')
 
 if [[ $version =~ ^[0-9]{14}$ ]]; then
     echo "perl version: $version"
