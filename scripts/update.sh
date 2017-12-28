@@ -34,12 +34,15 @@ checktool() {
 checktool curl
 checktool wget
 checktool cat
+checktool md5sum
 
 if [ ! -d "$INSTALLERDIR/perl" ]; then
     echo 'Not yet installed'
 fi
 
-version=$(curl -s $PERLURL/data/$OS/$ARCH/version)
+VVVV=$(curl -s $PERLURL/data/$OS/$ARCH/version)
+version=$(echo $VVV|awk '{print -F: $1}')
+md5=$(echo $VVV|awk '{print -F: $2}')
 
 if [[ $version =~ ^[0-9]{14}$ ]]; then
     echo "perl version: $version"
@@ -64,6 +67,13 @@ clean_exit () {
 LOCALINSTALLER=$(mktemp perl.XXXXXX)
 
 wget -O $LOCALINSTALLER $PERLURL/data/$OS/$ARCH/perl.$version.tar.gz || clean_exit 1
+
+fmd5=$(md5sum $LOCALINSTALLER|awk '{print $1}')
+
+if [ "X$md5" != "X$fmd5" ];then
+    echo "perl $version md5 nomatch"
+    exit 1;
+fi
 
 if [ ! -e $INSTALLERDIR ]; then
     mkdir -p $INSTALLERDIR
