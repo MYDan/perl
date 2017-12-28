@@ -42,7 +42,7 @@ fi
 VVVV=$(curl -s $PERLURL/data/$OS/$ARCH/version)
 
 version=$(echo $VVVV|awk -F: '{print $1}')
-md5=$(echo $VVVV|awk -F '{print $2}')
+md5=$(echo $VVVV|awk -F: '{print $2}')
 
 if [[ $version =~ ^[0-9]{14}$ ]];then
     echo "perl version: $version"
