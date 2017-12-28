@@ -4,7 +4,7 @@ ARCH=$(uname -m)
 PERLURL='https://raw.githubusercontent.com/MYDan/perl/master'
 INSTALLERDIR='/opt/mydan'
 
-for T in "Linux:x86_64" "Linux:i686" "CYGWIN_NT-6.1:x86_64"
+for T in "Linux:x86_64" "Linux:i686" "CYGWIN_NT-6.1:x86_64" "FreeBSD:amd64" "FreeBSD:i386"
 do
     o=$(echo $T|awk -F: '{print $1}')
     a=$(echo $T|awk -F: '{print $2}')
