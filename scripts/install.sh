@@ -58,9 +58,63 @@ clean_exit () {
     exit $1
 }
 
+get_repo ()
+{
+    ALLREPO=$1
+    C=${#ALLREPO[@]}
+
+    DF=/tmp/x.$$.tmp
+    mkfifo $DF
+    exec 1000<>$DF
+    rm -f $DF
+
+    for((n=1;n<=$C;n++))
+    do
+        echo >&1000
+    done
+
+    for((i=0;i<$C;i++))
+    do
+        read -u1000
+        {
+            s=$(curl --connect-timeout 1 ${ALLREPO[$i]}/check/health 2>/dev/null|grep 'ok'|wc -l)
+            echo "$i:$s" >&1000
+        }&
+    done
+
+    wait
+
+    for((i=1;i<=$C;i++))
+    do
+        read -u1000 X
+        id=$(echo $X|awk -F: '{print $1}')
+        s=$(echo $X|awk -F: '{print $2}')
+        if [[ "x1" == "x$s" && "x" == "x$CDN" ]];then
+            ID=$id
+        fi
+    done
+
+    exec 1000>&-
+    exec 1000<&-
+
+    if [ "X$ID" != "X" ] && [ "X$ID" != "X0" ];then
+        MYDan_REPO=${ALLREPO[$ID]}
+    fi
+}
+
+ALLREPO=( https://raw.githubusercontent.com/MYDan/openapi/master http://180.153.186.60 http://223.166.174.60 )
+get_repo $ALLREPO
+
+if [ -z "$MYDan_REPO" ];then
+    PACKTAR=$PERLURL/data/$OS/$ARCH/perl.$version.tar.gz
+else
+    PACKTAR="$MYDan_REPO/perl/$OS/$ARCH/perl.$version.tar.gz"
+fi
+
+
 LOCALINSTALLER=$(mktemp perl.XXXXXX)
 
-wget -O $LOCALINSTALLER $PERLURL/data/$OS/$ARCH/perl.$version.tar.gz || clean_exit 1
+wget -O $LOCALINSTALLER "$PACKTAR" || clean_exit 1
 
 fmd5=$(md5sum $LOCALINSTALLER|awk '{print $1}')
 
