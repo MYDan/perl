@@ -95,7 +95,7 @@ get_repo ()
         read -u1000 X
         id=$(echo $X|awk -F: '{print $1}')
         s=$(echo $X|awk -F: '{print $2}')
-        if [[ "x1" == "x$s" && "x" == "x$CDN" ]];then
+        if [[ "x1" == "x$s" && "x" == "x$ID" ]];then
             ID=$id
         fi
     done
