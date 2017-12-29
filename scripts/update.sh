@@ -114,7 +114,7 @@ get_repo $ALLREPO
 if [ -z "$MYDan_REPO" ];then
     PACKTAR=$PERLURL/data/$OS/$ARCH/perl.$version.tar.gz
 else
-    PACKTAR="$MYDan_REPO/perl/$OS/$ARCH/perl.$version.tar.gz"
+    PACKTAR="$MYDan_REPO/perl/data/$OS/$ARCH/perl.$version.tar.gz"
 fi
 
 
