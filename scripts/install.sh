@@ -49,7 +49,7 @@ if [ -d "$INSTALLERDIR/perl" ]; then
     exit 1
 fi
 
-VVVV=$(curl -k -s $PERLURL/data/$OS/$ARCH/$SLIC/version)
+VVVV=$(curl -k -s $PERLURL/data/$OS/$ARCH/${SLIC}version)
 version=$(echo $VVVV|awk -F: '{print $1}')
 md5=$(echo $VVVV|awk -F: '{print $2}')
 
