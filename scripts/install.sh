@@ -39,7 +39,7 @@ if [ -d "$INSTALLERDIR/perl" ]; then
     exit 1
 fi
 
-VVVV=$(curl -s $PERLURL/data/$OS/$ARCH/version)
+VVVV=$(curl -k -s $PERLURL/data/$OS/$ARCH/version)
 
 version=$(echo $VVVV|awk -F: '{print $1}')
 md5=$(echo $VVVV|awk -F: '{print $2}')
@@ -77,7 +77,7 @@ get_repo ()
     do
         read -u1000
         {
-            s=$(curl --connect-timeout 1 ${ALLREPO[$i]}/check/health 2>/dev/null|grep 'ok'|wc -l)
+            s=$(curl -k --connect-timeout 1 ${ALLREPO[$i]}/check/health 2>/dev/null|grep 'ok'|wc -l)
             echo "$i:$s" >&1000
         }&
     done
@@ -114,7 +114,7 @@ fi
 
 LOCALINSTALLER=$(mktemp perl.XXXXXX)
 
-wget -O $LOCALINSTALLER "$PACKTAR" || clean_exit 1
+wget --no-check-certificate -O $LOCALINSTALLER "$PACKTAR" || clean_exit 1
 
 fmd5=$(md5sum $LOCALINSTALLER|awk '{print $1}')
 
