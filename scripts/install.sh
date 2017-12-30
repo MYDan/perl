@@ -48,7 +48,7 @@ if [[ $version =~ ^[0-9]{14}$ ]];then
     echo "perl version: $version"
 else
     echo "get version fail"
-    exit;
+    exit 1;
 fi
 
 

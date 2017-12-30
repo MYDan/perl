@@ -21,7 +21,7 @@ fi
 
 if [ -f $INSTALLERDIR/perl/.lock ]; then
     echo "The perl is locked"
-    exit;
+    exit 1;
 fi
 
 checktool() {
@@ -48,7 +48,7 @@ if [[ $version =~ ^[0-9]{14}$ ]]; then
     echo "perl version: $version"
 else
     echo "get version fail"
-    exit;
+    exit 1;
 fi
 
 localversion=$(cat $INSTALLERDIR/perl/.version )
