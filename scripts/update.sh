@@ -5,6 +5,22 @@ ARCH=$(uname -m)
 PERLURL='https://raw.githubusercontent.com/MYDan/perl/master'
 INSTALLERDIR='/opt/mydan'
 
+checktool() {
+    if ! type $1 >/dev/null 2>&1; then
+        echo "Need tool: $1"
+        exit 1;
+    fi
+}
+
+SLIC=""
+if [ "X$OS" == "XLinux" ] && [ "X$ARCH" == "Xx86_64" ]; then
+     checktool ldd
+     LDDVERSION=$(ldd --version|head -n 1)
+     if [ "X$LDDVERSION" == "Xldd (GNU libc) 2.5" ];then
+         SLIC="libc/2.5/"
+     fi
+fi
+
 for T in "Linux:x86_64" "Linux:i686" "CYGWIN_NT-6.1:x86_64" "FreeBSD:amd64" "FreeBSD:i386"
 do
     o=$(echo $T|awk -F: '{print $1}')
@@ -24,13 +40,6 @@ if [ -f $INSTALLERDIR/perl/.lock ]; then
     exit 1;
 fi
 
-checktool() {
-    if ! type $1 >/dev/null 2>&1; then
-        echo "Need tool: $1"
-        exit 1;  
-    fi
-}
-
 checktool curl
 checktool wget
 checktool cat
@@ -40,7 +49,7 @@ if [ ! -d "$INSTALLERDIR/perl" ]; then
     echo 'Not yet installed'
 fi
 
-VVVV=$(curl -k -s $PERLURL/data/$OS/$ARCH/version)
+VVVV=$(curl -k -s $PERLURL/data/$OS/$ARCH/${SLIC}version)
 version=$(echo $VVVV|awk -F: '{print $1}')
 md5=$(echo $VVVV|awk -F: '{print $2}')
 
@@ -112,9 +121,9 @@ ALLREPO=( https://raw.githubusercontent.com/MYDan/openapi/master http://180.153.
 get_repo $ALLREPO
 
 if [ -z "$MYDan_REPO" ];then
-    PACKTAR=$PERLURL/data/$OS/$ARCH/perl.$version.tar.gz
+    PACKTAR=$PERLURL/data/$OS/$ARCH/${SLIC}perl.$version.tar.gz
 else
-    PACKTAR="$MYDan_REPO/perl/data/$OS/$ARCH/perl.$version.tar.gz"
+    PACKTAR="$MYDan_REPO/perl/data/$OS/$ARCH/${SLIC}perl.$version.tar.gz"
 fi
 
 
@@ -139,4 +148,4 @@ tar -zxf $LOCALINSTALLER -C $INSTALLERDIR || clean_exit 1
 
 echo $version > $INSTALLERDIR/perl/.version
 
-echo OK
+echo perl update OK
