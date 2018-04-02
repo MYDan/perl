@@ -117,7 +117,8 @@ get_repo ()
     fi
 }
 
-ALLREPO=( $PERLURL http://180.153.186.60/perl http://223.166.174.60/perl )
+MYDAN_REPO=$(echo $MYDAN_REPO_PRIVATE $MYDAN_REPO_PUBLIC|xargs -n 1|awk '{print $0"/perl"}'|xargs -n 100)
+ALLREPO=( $PERLURL $MYDAN_REPO )
 get_repo $ALLREPO
 
 if [ -z "$MYDan_REPO" ];then
