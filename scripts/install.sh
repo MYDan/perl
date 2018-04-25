@@ -103,9 +103,18 @@ get_repo ()
     fi
 }
 
-MYDAN_REPO=$(echo $MYDAN_REPO_PRIVATE $MYDAN_REPO_PUBLIC|xargs -n 1|awk '{print $0"/perl"}'|xargs -n 100)
-ALLREPO=( $PERLURL $MYDAN_REPO )
-get_repo $ALLREPO
+if [[ ! -z $MYDAN_REPO_PRIVATE ]];then
+    MYDAN_REPO=$(echo $MYDAN_REPO_PRIVATE |xargs -n 1|awk '{print $0"/perl"}'|xargs -n 100)
+    ALLREPO=( $MYDAN_REPO )
+    get_repo $ALLREPO
+fi
+
+if [ -z $MYDan_REPO ];then
+    MYDAN_REPO=$(echo $MYDAN_REPO_PUBLIC|xargs -n 1|awk '{print $0"/perl"}'|xargs -n 100)
+    ALLREPO=( $PERLURL $MYDAN_REPO )
+    get_repo $ALLREPO
+fi
+
 if [ -z "$MYDan_REPO" ];then
     echo "nofind $OS/$ARCH/${SLIC}perl.$version.tar.gz on all repo"
     exit 1
