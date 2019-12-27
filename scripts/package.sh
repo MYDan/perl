@@ -49,7 +49,7 @@ if [ -f "$DIST" ]; then
     exit 0
 fi
 
-for T in "Linux:x86_64" "Linux:i686" "CYGWIN_NT-6.1:x86_64" "FreeBSD:amd64" "FreeBSD:i386"
+for T in "Linux:x86_64" "Linux:i686" "CYGWIN_NT-6.1:x86_64" "CYGWIN_NT-10.0:x86_64" "FreeBSD:amd64" "FreeBSD:i386"
 do
     o=$(echo $T|awk -F: '{print $1}')
     a=$(echo $T|awk -F: '{print $2}')
